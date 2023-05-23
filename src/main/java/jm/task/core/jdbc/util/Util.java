@@ -25,19 +25,21 @@ public class Util {
         return connection;
     }
     public static SessionFactory hibernateConnection() {
-        try {
-            Configuration configuration = new Configuration()
-                    .setProperty("hibernate.connection.driver_class", DRIVER)
-                    .setProperty("hibernate.connection.url", URL)
-                    .setProperty("hibernate.connection.username", USER)
-                    .setProperty("hibernate.connection.password", PASS)
-                    .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
-                    .addAnnotatedClass(User.class);
-            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                    .applySettings(configuration.getProperties()).build();
-            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-        } catch (HibernateException e) {
-            e.printStackTrace();
+        if (sessionFactory == null){
+            try {
+                Configuration configuration = new Configuration()
+                        .setProperty("hibernate.connection.driver_class", DRIVER)
+                        .setProperty("hibernate.connection.url", URL)
+                        .setProperty("hibernate.connection.username", USER)
+                        .setProperty("hibernate.connection.password", PASS)
+                        .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
+                        .addAnnotatedClass(User.class);
+                ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                        .applySettings(configuration.getProperties()).build();
+                sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+            } catch (HibernateException e) {
+                e.printStackTrace();
+            }
         }
         return sessionFactory;
     }
